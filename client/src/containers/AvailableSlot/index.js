@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Form, Button, Row, Col, Card, DatePicker, TimePicker } from 'antd'
-
 
 import './style.css';
 
@@ -22,12 +19,10 @@ const tailLayout = {
 };
 
 export default function AvailableSlot() {
-  const dispatch = useDispatch();
-  const history = useHistory();
   const [error, setError] = useState();
 
   const onFinish = (formValues) => {
-console.log(formValues)
+    console.log(formValues)
   };
 
   const onFinishFailed = (errorInfo) => {

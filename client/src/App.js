@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import PrivateRoute from './utils/privateRoute';
 import Login from './containers/Login';
 import Dashboard from './containers/Dashboard';
-import BookingMeetingList from './containers/BookingMeetingList';
 import userAction from './redux/actions/userAction';
 
 import './App.css';
+import 'antd/dist/antd.css'
 
 function App() {
   const dispatch = useDispatch();
