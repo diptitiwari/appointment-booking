@@ -26,14 +26,14 @@ export default function AvailableSlot() {
   const dispatch = useDispatch();
   const userDetail = useSelector(state => state.user.userDetail);
 
-  const onFinish = async (formValues) => {
+  const onFinish = (formValues) => {
     const payload = {
       user_id: userDetail.username,
-      slot_date: moment(formValues.date).startOf('day'),
+      slot_date: moment(formValues.date).format('L'),
       start_time: moment(`${moment(formValues.date).format('L')} ${moment(formValues.time[0]).format('LT')}`),
       end_time: moment(`${moment(formValues.date).format('L')} ${moment(formValues.time[1]).format('LT')}`)
     }
-    await dispatch(createAvailableSlot(payload));
+    dispatch(createAvailableSlot(payload));
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -52,9 +52,6 @@ export default function AvailableSlot() {
           <Form
             {...layout}
             name="basic"
-            initialValues={{
-              remember: true,
-            }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >

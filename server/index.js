@@ -14,7 +14,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 app.use(cors())
 // Connect to Mongoose and set connection variable
-mongoose.connect('mongodb://localhost/novalabs', { useNewUrlParser: true, useFindAndModify: true })
+mongoose.connect('mongodb://localhost/novalabs',
+  { useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 

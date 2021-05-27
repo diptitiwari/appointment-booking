@@ -39,7 +39,11 @@ exports.getAppointmentList = async function (req, res) {
     const list = await Appointment.find(
       req.params,
     );
-    res.json(list);
+    res.json({
+      status: 'success',
+      message: 'Appointments retrieved successfully',
+      data: list
+    })
   } catch (err) {
     res.status(500).send(err)
   }
@@ -50,7 +54,7 @@ exports.updateStatusAppointment = async (req, res) => {
     const appointment = await Appointment.findOneAndUpdate(
       { _id: req.params.id },
       {
-        $set: req.body.status
+        $set: req.body
       }
     );
     res.json(appointment);
@@ -68,7 +72,7 @@ exports.new = function (req, res) {
   appointment.save(function (err) {
     // Check for validation error
     if (err)
-      res.json(err)
+      res.status(500).send(err)
     else
       res.json({
         message: 'New appointment created!',

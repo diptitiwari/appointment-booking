@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,6 +10,10 @@ import { useHistory } from 'react-router-dom';
 import {Row, Col} from 'antd';
 
 import AvailableSlot from '../AvailableSlot';
+import AvailableSlotList from '../AvailableSlotList';
+import AppointmentBookingList from '../AppointmentBookingList';
+import {getAvailableSlotList} from '../../redux/actions/availableSlotAction';
+import AppointmentBooking from '../AppointmentBooking';
 import userAction from '../../redux/actions/userAction';
 import './style.css';
 
@@ -30,6 +34,10 @@ export default function Dashboard () {
     history.push('/login');
   }
 
+  useEffect(() => {
+    dispatch(getAvailableSlotList());
+  }, []);
+
   return (
     <Layout style={{height: '100%'}}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -46,6 +54,7 @@ export default function Dashboard () {
             className: 'trigger',
             onClick: toggle,
           })}
+          <span style={{padding: '5px', fontSize: 'large', fontWeight: 'bold'}}>{userDetail.username}</span>
         </Header>
         <Content
           className="site-layout-background"
@@ -61,16 +70,20 @@ export default function Dashboard () {
               <Col span={10}>
                 <AvailableSlot />
               </Col>
-              <Col span={14}>col-12</Col>
+              <Col span={14}>
+                <AppointmentBookingList />
+              </Col>
             </Row>
           }
           {
             userDetail.username === 'user' &&
             <Row>
               <Col span={10}>
-                <AvailableSlot />
+                <AppointmentBooking />
               </Col>
-              <Col span={14}>col-12</Col>
+              <Col span={14}>
+                <AvailableSlotList />
+              </Col>
             </Row>
           }
         </Content>

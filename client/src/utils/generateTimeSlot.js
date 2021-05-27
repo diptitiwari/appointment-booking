@@ -1,17 +1,15 @@
-module.exports = () => {
-  const slotDetail = {
-    nextSlot: 30,
-    startTime: '8:00',
-    endTime: '20:50'
-  };
+import moment from 'moment';
 
-  let slotTime = moment(slotDetail.startTime, "HH:mm");
-  const endTime = moment(slotDetail.endTime, "HH:mm");
+export const generateSlot = (slot) => {
+  const intervalSlot = 30;
 
-  const times = [];
-  while (slotTime < endTime)
-  {
-    slotTime = slotTime.add(slotDetail.nextSlot, 'minutes');
+  let startTime = moment(slot.start_time);
+  const endTime = moment(slot.end_time);
+
+  const times = [startTime];
+  while (startTime < endTime) {
+    startTime = moment(startTime).add(intervalSlot, 'minutes');
+    times.push(startTime);
   }
   return times;
 }

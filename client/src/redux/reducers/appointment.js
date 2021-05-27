@@ -4,7 +4,7 @@ const initialState = {
 
 module.exports = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_AVAILABLE_SLOT_LIST":
+    case "SET_APPOINTMENT_LIST":
       return {
         ...state,
         list: action.payload.data,
