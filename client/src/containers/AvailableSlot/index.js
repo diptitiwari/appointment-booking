@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
+import moment from 'moment';
 import { Form, Button, Row, Col, Card, DatePicker, TimePicker } from 'antd'
+import { useDispatch, useSelector } from 'react-redux';
+
+import {createAvailableSlot} from '../../redux/actions/availableSlotAction';
 
 import './style.css';
 
@@ -19,15 +23,24 @@ const tailLayout = {
 };
 
 export default function AvailableSlot() {
-  const [error, setError] = useState();
+  const dispatch = useDispatch();
+  const userDetail = useSelector(state => state.user.userDetail);
 
-  const onFinish = (formValues) => {
-    console.log(formValues)
+  const onFinish = async (formValues) => {
+    const payload = {
+      user_id: userDetail.username,
+      slot_date: moment(formValues.date).startOf('day'),
+      start_time: moment(`${moment(formValues.date).format('L')} ${moment(formValues.time[0]).format('LT')}`),
+      end_time: moment(`${moment(formValues.date).format('L')} ${moment(formValues.time[1]).format('LT')}`)
+    }
+    await dispatch(createAvailableSlot(payload));
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  const disabledDate = (current) => (current && current <= moment().endOf('hour'));
 
   return (
     <Row type="flex" justify="center" style={{minHeight: '100vh'}}>
@@ -55,7 +68,7 @@ export default function AvailableSlot() {
                 },
               ]}
             >
-              <DatePicker />
+              <DatePicker format="YYYY-MM-DD" disabledDate={disabledDate}/>
             </Form.Item>
 
             <Form.Item
@@ -70,9 +83,6 @@ export default function AvailableSlot() {
             >
               <TimePicker.RangePicker format={'HH:mm'}/>
             </Form.Item>
-
-            {error && <span>{error}</span>}
-
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit">
                 Submit

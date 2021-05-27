@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import { Form, Button, Row, Col, Card, DatePicker, TimePicker } from 'antd'
+import moment from 'moment';
+import { Form, Button, Row, Col, Card, DatePicker, TimePicker } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.css';
 
@@ -19,7 +21,9 @@ const tailLayout = {
 };
 
 export default function AppointmentBooking() {
+  const dispatch = useDispatch();
   const [error, setError] = useState();
+  const userDetail = useSelector(state => state.user.userDetail);
 
   const onFinish = (formValues) => {
     console.log(formValues)
@@ -28,6 +32,8 @@ export default function AppointmentBooking() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  const disabledDate = (current) => (current && current < moment().endOf('day'));
 
   return (
     <Row type="flex" justify="center" style={{minHeight: '100vh'}}>
@@ -55,7 +61,7 @@ export default function AppointmentBooking() {
                 },
               ]}
             >
-              <DatePicker />
+              <DatePicker format="YYYY-MM-DD" disabledDate={disabledDate}/>
             </Form.Item>
 
             <Form.Item

@@ -64,6 +64,15 @@ export default function Dashboard () {
               <Col span={14}>col-12</Col>
             </Row>
           }
+          {
+            userDetail.username === 'user' &&
+            <Row>
+              <Col span={10}>
+                <AvailableSlot />
+              </Col>
+              <Col span={14}>col-12</Col>
+            </Row>
+          }
         </Content>
       </Layout>
     </Layout>
