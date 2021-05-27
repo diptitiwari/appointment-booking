@@ -27,6 +27,7 @@ const tailLayout = {
 export default function AppointmentBooking() {
   const dispatch = useDispatch();
   const [slots, setSlots] = useState();
+  const [disableBtn, setDisableBtn] = useState();
   const userDetail = useSelector(state => state.user.userDetail);
   const availableSlotList = useSelector(state => state.availableSlots.list);
 
@@ -46,13 +47,18 @@ export default function AppointmentBooking() {
     if (date) {
       const selectedSlot  = _.find(availableSlotList, (slot) =>
         moment(slot.slot_date).format('L') === moment(date).format('L'));
-      const slots = generateSlot(selectedSlot);
-      const radioSlots = [];
-      for (let  i = 0; i < slots.length -1; i++) {
-        const range = `${moment(slots[i]).format('LT')} - ${moment(slots[i+1]).format('LT')}`
-        radioSlots.push(<Radio value={range} key={i}>{range}</Radio>)
+      if (selectedSlot) {
+        const slots = generateSlot(selectedSlot);
+        const radioSlots = [];
+        for (let  i = 0; i < slots.length -1; i++) {
+          const range = `${moment(slots[i]).format('LT')} - ${moment(slots[i+1]).format('LT')}`
+          radioSlots.push(<Radio value={range} key={i}>{range}</Radio>)
+        }
+        setSlots(radioSlots);
+      } else {
+        setSlots(<span style={{fontSize: 'large'}}>No Slots available for this day</span>);
+        setDisableBtn(true);
       }
-      setSlots(radioSlots);
     }
   }
 
@@ -119,7 +125,7 @@ export default function AppointmentBooking() {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" disabled={disableBtn}>
                 Submit
               </Button>
             </Form.Item>
